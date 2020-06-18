@@ -1,0 +1,4 @@
+# File objects
+with open("/Users/lyanalexandr/pg23434.txt","r") as file:
+    f_contents = file.read()
+    print(f_contents)
