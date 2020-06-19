@@ -6,8 +6,7 @@ from datetime import datetime
 class QuotesSpider(scrapy.Spider):
     name = "kak"
     
-    start_urls = ['https://kaktus.media/doc/415400_kogda_vijy_ludey_bez_maski_dysha_plachet._mer_osha_prizval_slyjby_rabotat_dlia_ludey.html']
-
+    start_urls = ['https://kaktus.media/?date={date.today().isoformat()}&lable=8&order=main']
 
     # main function for extracting data
     def parse(self, response):
