@@ -19,7 +19,7 @@ class QuotesSpider(scrapy.Spider):
     def get_links(self, response):
         links = []
 
-        for link in response.xpath('/html/body/div[4]/div[5]/div[1]/div/div/div[2]/div/div[2]/a/@href')[:10]:
+        for link in response.xpath('/html/body/div[4]/div[5]/div[1]/div/div/div[2]/div/div[2]/a/@href'):
             time.sleep(1)
 
             href = 'https://24.kg'+link.get()
@@ -34,7 +34,6 @@ class QuotesSpider(scrapy.Spider):
         # part for parsing paragraphs
         paragraphs = []
         
-        # another pattern '//*[@id="content-wrapper"]/div[1]/div[1]/div[4]/p'
         
         if response.xpath('//*[@id="content-wrapper"]/div[1]/div[1]/div[3]/p'):
             xpath_paragraph = response.xpath('//*[@id="content-wrapper"]/div[1]/div[1]/div[3]/p')
@@ -52,7 +51,7 @@ class QuotesSpider(scrapy.Spider):
             paragraphs.append(paragraph)
         
         # parsing time 
-        time.sleep(1)
+        time.sleep(2)
 
         # parsing time
         if response.xpath('//*[@id="content-wrapper"]/div[1]/div[1]/div[3]/div/span[1]/@content'):
@@ -62,7 +61,6 @@ class QuotesSpider(scrapy.Spider):
 
 
         # parsing view number
-
         if response.xpath('/html/body/div[4]/div[2]/div[1]/div[1]/div[5]/div[1]/text()[4]').get():
             views = int(re.findall(r'(\d+)', response.xpath('/html/body/div[4]/div[2]/div[1]/div[1]/div[5]/div[1]/text()[4]').get())[0])
         else:
