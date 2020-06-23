@@ -46,8 +46,19 @@ class QuotesSpider(scrapy.Spider):
             paragraphs.append(paragraph)
 
         # Parsing datetime
-        date_time = time.mktime(datetime.strptime(response.xpath('/html/body/div[1]/div[7]/div/div[1]/div/div[1]/div[1]/time[1]/@datetime').extract()[0][:10], '%Y-%m-%d').timetuple())
+        date_time = datetime.strptime(response.xpath('/html/body/div[1]/div[7]/div/div[1]/div/div[1]/div[1]/time[1]/@datetime').extract()[0][:10], '%Y-%m-%d')
         
+        # Parsing views
+        try:                                                                    # \/ different index
+            if response.xpath('/html/body/div[1]/div[7]/div/div[1]/div/div[1]/div[4]/span[1]/text()').get():
+                views = response.xpath('/html/body/div[1]/div[7]/div/div[1]/div/div[1]/div[4]/span[1]/text()').get()
+            elif response.xpath("/html/body/div[1]/div[7]/div/div[1]/div/div[1]/div[2]/span[1]/text()").get():
+                views = response.xpath("/html/body/div[1]/div[7]/div/div[1]/div/div[1]/div[2]/span[1]/text()").get()
+            else:
+                views = response.xpath("/html/body/div[1]/div[7]/div/div[1]/div/div[1]/div[3]/span[1]/text()").get()
+        except TypeError:
+            '-9999'
+
         time.sleep(1)
 
         yield {
@@ -56,4 +67,5 @@ class QuotesSpider(scrapy.Spider):
             'header': response.xpath('/html/body/div[1]/div[6]/div/div/div[1]/h1/text()').get(),
             'topic': response.xpath('/html/body/div[1]/div[7]/div/div[1]/div/div[1]/a/text()').get(),
             'content': ' '.join(paragraphs),
+            'views': views
         }

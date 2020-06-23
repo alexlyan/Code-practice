@@ -36,14 +36,12 @@ class QuotesSpider(scrapy.Spider):
 
         time.sleep(1)
 
-        date_time = time.mktime(datetime.strptime(response.xpath('/html/body/div[2]/div[5]/div/div/div/div/div[2]/time/@datetime').extract()[0],'%Y-%m-%dT%H:%M:%S%z').timetuple())
-
         yield {
             'url': response.url,
-            'date': date_time,
+            'date': datetime.strptime(response.xpath('/html/body/div[2]/div[5]/div/div/div/div/div[2]/time/@datetime').extract()[0],'%Y-%m-%dT%H:%M:%S%z'),
             'topic': response.xpath('/html/body/div[2]/div[5]/div/div/div/p/a/span/text()').get(),
             'header': response.xpath('/html/body/div[2]/div[5]/div/div/div/h1/span[1]/text()').get(),
             'content': ' '.join(paragraphs),
-            # 'views': response.xpath("/html/body/div[2]/div[5]/div/div/div/div/div[1]/span/text()").get().strip(), ###
+            'views': response.xpath("/html/body/div[2]/div[5]/div/div/div/div/div[1]/span/text()").get().strip(), ###
             # 'comment': response.xpath("/html/body/div[2]/div[5]/div/div/div/div/div[1]/span[2]/text()").get().strip()
         }

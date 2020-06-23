@@ -55,16 +55,22 @@ class QuotesSpider(scrapy.Spider):
 
         # parsing time
         if response.xpath('//*[@id="content-wrapper"]/div[1]/div[1]/div[3]/div/span[1]/@content'):
-            time_date = time.mktime(datetime.strptime(response.xpath('//*[@id="content-wrapper"]/div[1]/div[1]/div[3]/div/span[1]/@content').extract()[0][:10], '%Y-%m-%d').timetuple())
+            time_date = datetime.strptime(response.xpath('//*[@id="content-wrapper"]/div[1]/div[1]/div[3]/div/span[1]/@content').extract()[0][:10], '%Y-%m-%d')
         else:
-            time_date = time.mktime(datetime.strptime(response.xpath('//*[@id="content-wrapper"]/div[1]/div[1]/div[1]/div[2]/span[1]/@content').extract()[0][:10], '%Y-%m-%d').timetuple())
-    
+            time_date = datetime.strptime(response.xpath('//*[@id="content-wrapper"]/div[1]/div[1]/div[1]/div[2]/span[1]/@content').extract()[0][:10], '%Y-%m-%d')
 
+
+        # parsing view number
+        if response.xpath('/html/body/div[4]/div[2]/div[1]/div[1]/div[5]/div[1]/text()[4]').get():
+            views = int(re.findall(r'(\d+)', response.xpath('/html/body/div[4]/div[2]/div[1]/div[1]/div[5]/div[1]/text()[4]').get())[0])
+        else:
+            views = int(re.findall(r'(\d+)', response.xpath('/html/body/div[4]/div[2]/div[1]/div[1]/div[4]/div[1]/text()[4]').get())[0])
 
         yield {
-            'date': time_date,
             'url': response.url,
+            'date': time_date,
             'topic': response.xpath('//*[@id="content-wrapper"]/div[1]/div[1]/div[1]/div[1]/a/text()').get().strip(),
             'header': response.xpath('//*[@id="content-wrapper"]/div[1]/div[1]/h1/text()').get().replace('\xa0', ' '),
             'content': ' '.join(paragraphs),
+            'views': views
         }

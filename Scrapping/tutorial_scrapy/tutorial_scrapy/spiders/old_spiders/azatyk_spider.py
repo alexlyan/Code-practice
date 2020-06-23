@@ -60,17 +60,17 @@ class AzattykSpider(scrapy.Spider):
         date_time = response.xpath('//*[@id="content"]/div[1]/div[1]/div/div[3]/div/div/span/time/text()').get().strip()
 
         # if publication was recently posted in mins ago "минуты", we substract mins from now time
-        if re.search(r'минут', date_time):
+        if re.search(r'минут(ы)', date_time):
             mins = re.findall(r'\w+', date_time)
-            date = time.mktime((datetime.now() - timedelta(minutes=int(mins[0]))).timetuple())
+            date = datetime.now() - timedelta(minutes=int(mins[0]))
         # if publication was recently posted in hour(s) ago "часы", we substract hours from now time
         elif re.search(r'часа', date_time):
             hours = re.findall(r'\w+', date_time)
-            date = time.mktime((datetime.now() - timedelta(hours=int(hours[0]))).timetuple())
+            date = datetime.now() - timedelta(hours=int(hours[0]))
         # else return time published
         else:
             m, d, y = date_time.replace(',', '').split()
-            date = time.mktime((datetime.strptime(f'{y}-{months[m]}-{d}','%Y-%m-%d')).timetuple())
+            date = datetime.strptime(f'{y}-{months[m]}-{d}','%Y-%m-%d')
 
         # Parsing Topic of artictle
         topic = response.xpath('//*[@id="content"]/div[1]/div[1]/div/div[1]/div/a/text()').get()       
@@ -82,4 +82,6 @@ class AzattykSpider(scrapy.Spider):
                 'date': date,
                 'header': response.xpath('//*[@id="content"]/div[1]/div[1]/div/div[2]/h1/text()').get().strip(),
                 'topic': topic,
-                'content': ' '.join(paragraphs)}
+                'content': ' '.join(paragraphs),
+                'views': 0
+        }
