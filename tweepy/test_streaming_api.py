@@ -1,7 +1,7 @@
 from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler
 from tweepy import Stream
-from lucid_tweepy import twitter_credentials
+from fold_tweepy import twitter_credentials # file in fold_tweepy directory
 import json
 import pandas as pd
 

@@ -116,7 +116,7 @@ if __name__ == '__main__':
     twitter_client = TwitterClient()
     api = twitter_client.get_twitter_client_api()
     tweet_analyzer = TweetAnalyzer()
-    tweets = api.user_timeline(screen_name="tds_ai", count=20) # enter 
+    tweets = api.user_timeline(screen_name="kyrgyzstan", count=20) # enter 
     # for order in range(len(tweets)):
     #     print(f'Tweet number {order}: {tweets[order]._json["text"]}')
 
