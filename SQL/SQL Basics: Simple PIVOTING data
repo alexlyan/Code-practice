@@ -1,0 +1,11 @@
+CREATE EXTENSION tablefunc;
+
+SELECT * FROM 
+crosstab(
+$$
+  SELECT p.name, d.detail, COUNT(*) FROM products p 
+  INNER JOIN details d ON d.product_id = p.id
+  GROUP BY p.name, d.detail
+  ORDER BY p.name, CASE d.detail WHEN 'good' THEN 1 WHEN 'ok' THEN 2 ELSE 3 END
+$$
+) AS ct(name text, "good" bigint,"ok" bigint,"bad" bigint);

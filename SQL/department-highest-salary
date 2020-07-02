@@ -1,0 +1,11 @@
+# https://leetcode.com/problems/department-highest-salary/
+
+SELECT d.Name as Department,
+       e.Name as Employee,
+       e.Salary
+FROM Employee e,
+    (SELECT DepartmentId, max(Salary) as max FROM Employee GROUP BY DepartmentId) T,
+	Department D
+WHERE e.DepartmentId = T.DepartmentId 
+  AND e.Salary = T.max
+  AND e.DepartmentId = D.id
