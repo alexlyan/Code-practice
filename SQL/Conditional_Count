@@ -1,0 +1,22 @@
+-- https://www.codewars.com/kata/5816a3ecf54413a113000074/
+-- Solution to Conditional_Count
+
+-- Replace with your SQL Query
+SElECT 
+      month,
+      COUNT(*) AS total_count,
+      SUM(amount) AS total_amount,
+      COUNT(mike_count) AS mike_count,
+      SUM(mike_amount) AS mike_amount,
+      COUNT(jon_count) AS jon_count,
+      SUM(jon_amount) AS jon_amount
+FROM ( SELECT 
+      DATE_PART('month', payment_date) AS month,
+    CASE WHEN staff_id=1 THEN 1 END AS mike_count,
+    CASE WHEN staff_id=1 THEN amount END AS mike_amount,
+    CASE WHEN staff_id=2 THEN 1 END AS jon_count,
+    CASE WHEN staff_id=2 THEN amount END AS jon_amount,
+    amount AS amount
+    FROM payment) as subquery
+GROUP BY month
+ORDER BY month;
