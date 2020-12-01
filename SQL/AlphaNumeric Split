@@ -1,7 +1,0 @@
--- https://www.codewars.com/kata/594257d4db68b6e99200002c
--- SQL: Regex AlphaNumeric Split
-
-SELECT project,
-  regexp_replace(address, '\d', '', 'g') AS letters,
-  regexp_replace(address, '\D', '', 'g') AS numbers
-FROM repositories
